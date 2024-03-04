@@ -46,20 +46,47 @@ defmodule MyModule do
   import Nx.Defn
 
   defn adds(x, n) do
+    x + n
+  end
+
+  defn adds2(x, n) do
     Nx.add(x, n)
   end
 
-  defn adds_print(x, n) do
-    Nx.add(x, n) |> print_expr()
+  defn expr_print(x, n) do
+    adds2(x, n) |> print_expr()
   end
 end
 ```
 
 ```elixir
 a = Nx.tensor([[1, 2, 3], [4, 5, 6]])
-MyModule.adds(a, 5)
+MyModule.adds2(a, 5)
 ```
 
 ```elixir
-MyModule.adds_print(a, 7)
+MyModule.expr_print(a, 7)
+```
+
+Vectorization example
+
+```elixir
+defmodule MyModule2 do
+  import Nx.Defn
+
+  defn normalize(t) do
+    case Nx.shape(t) do
+      {_} -> :ok
+      _ -> raise "invalid shape"
+    end
+
+    min = Nx.reduce_min(t)
+    zero_min = Nx.subtract(t, min)
+    Nx.divide(zero_min, Nx.reduce_max(zero_min))
+  end
+end
+```
+
+```elixir
+MyModule2.normalize(Nx.tensor([3, 2, 6]))
 ```

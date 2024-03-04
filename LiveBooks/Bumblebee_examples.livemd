@@ -15,7 +15,7 @@ Mix.install([
 Set default backend for Nx
 
 ```elixir
-Nx.global_default_backend(EXLA.Backend)
+Nx.default_backend(EXLA.Backend)
 ```
 
 Load model from HuggingFace
@@ -35,7 +35,7 @@ zero_shot_serving = Bumblebee.Text.zero_shot_classification(model, tokenizer, la
 ```
 
 ```elixir
-input = "I need change my seat"
+input = "I need a ticket"
 Nx.Serving.run(zero_shot_serving, input)
 ```
 
@@ -55,39 +55,6 @@ chatbot_serving =
   )
 ```
 
-Make a chatroom by Kino
-
-```elixir
-frame = Kino.Frame.new()
-
-controls = [message: Kino.Input.text("Input Message")]
-form = Kino.Control.form(controls, submit: "Send Message", reset_on_submit: [:message])
-
-form
-|> Kino.Control.stream()
-|> Kino.listen(nil, fn %{data: %{message: message}}, history ->
-  Kino.Frame.append(frame, Kino.Markdown.new("**Me:** #{message}"))
-
-  output = Nx.Serving.run(chatbot_serving, %{text: message, history: history})
-  %{results: [%{text: text}]} = output
-  IO.inspect(output)
-  Kino.Frame.append(frame, Kino.Markdown.new("**Bot:** #{text}"))
-
-  history =
-    case history do
-      nil ->
-        text
-
-      _ ->
-        history <> " " <> text
-    end
-
-  {:cont, history}
-end)
-
-Kino.Layout.grid([frame, form], gap: 16)
-```
-
 ## Text Generation
 
 ```elixir
@@ -97,7 +64,7 @@ Kino.Layout.grid([frame, form], gap: 16)
 
 chatgpt_serving = Bumblebee.Text.generation(gpt2, tokenizer, generation_config)
 
-text_input = Kino.Input.text("Text", default: "Yesterday, I was reading a book and")
+text_input = Kino.Input.text("Text Suggestion", default: "I like to travel around the world")
 ```
 
 ```elixir
@@ -107,7 +74,7 @@ Nx.Serving.run(chatgpt_serving, text)
 
 ## Classifying Images
 
-Load model & create a Nx serving
+Load model from Hugging Face.
 
 ```elixir
 {:ok, model_info} = Bumblebee.load_model({:hf, "google/vit-base-patch16-224"})
@@ -194,9 +161,9 @@ Setup text input
 
 ```elixir
 prompt_input =
-  Kino.Input.text("Prompt", default: "numbat, forest, high quality, detailed, digital art")
+  Kino.Input.text("Prompt", default: "pig, medium quality")
 
-negative_prompt_input = Kino.Input.text("Negative Prompt", default: "darkness, rainy, foggy")
+negative_prompt_input = Kino.Input.text("Negative Prompt", default: "")
 
 Kino.Layout.grid([prompt_input, negative_prompt_input])
 ```
