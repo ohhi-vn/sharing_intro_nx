@@ -1,0 +1,65 @@
+# Nx examples
+
+```elixir
+Mix.install([
+  {:axon, "~> 0.6"},
+  {:exla, "~> 0.7"},
+  {:nx, "~> 0.7"}
+])
+```
+
+## Tensor examples
+
+```elixir
+Nx.tensor([3, 2, 1])
+```
+
+```elixir
+Nx.tensor([[1, 2], [3, 4], [5, 6]], type: {:f, 32}, names: [:x, :y])
+```
+
+```elixir
+a = Nx.tensor([[1, 2, 3], [4, 5, 6]])
+b = Nx.tensor([[6, 7, 8], [9, 10, 11]])
+
+c = Nx.multiply(a, b)
+```
+
+```elixir
+Nx.sum(c)
+```
+
+```elixir
+tensor = Nx.iota({1000, 1000})
+```
+
+```elixir
+Nx.sum(tensor)
+```
+
+## Defn examples
+
+Simple module uses defn macro
+
+```elixir
+defmodule MyModule do
+  import Nx.Defn
+
+  defn adds(x, n) do
+    Nx.add(x, n)
+  end
+
+  defn adds_print(x, n) do
+    Nx.add(x, n) |> print_expr()
+  end
+end
+```
+
+```elixir
+a = Nx.tensor([[1, 2, 3], [4, 5, 6]])
+MyModule.adds(a, 5)
+```
+
+```elixir
+MyModule.adds_print(a, 7)
+```
