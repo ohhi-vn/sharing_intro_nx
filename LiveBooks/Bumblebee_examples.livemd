@@ -22,9 +22,6 @@ Load model from HuggingFace
 
 ```elixir
 {:ok, model} = Bumblebee.load_model({:hf, "facebook/bart-large-mnli"})
-```
-
-```elixir
 {:ok, tokenizer} = Bumblebee.load_tokenizer({:hf, "facebook/bart-large-mnli"})
 ```
 
@@ -35,24 +32,8 @@ zero_shot_serving = Bumblebee.Text.zero_shot_classification(model, tokenizer, la
 ```
 
 ```elixir
-input = "I need a ticket"
+input = "I do not need that ticket"
 Nx.Serving.run(zero_shot_serving, input)
-```
-
-## Chatbot example
-
-Load model
-
-```elixir
-{:ok, model} = Bumblebee.load_model({:hf, "microsoft/DialoGPT-medium"})
-{:ok, tokenizer} = Bumblebee.load_tokenizer({:hf, "gpt2"})
-{:ok, generation_config} = Bumblebee.load_generation_config({:hf, "microsoft/DialoGPT-medium"})
-
-chatbot_serving =
-  Bumblebee.Text.generation(model, tokenizer, generation_config,
-    compile: [batch_size: 1, sequence_length: 1000],
-    defn_options: [compiler: EXLA]
-  )
 ```
 
 ## Text Generation
@@ -142,11 +123,11 @@ Start serving
 ```elixir
 serving =
   Bumblebee.Diffusion.StableDiffusion.text_to_image(clip, unet, vae, tokenizer, scheduler,
-    num_steps: 20,
-    num_images_per_prompt: 1,
+    num_steps: 30,
+    num_images_per_prompt: 3,
     safety_checker: safety_checker,
     safety_checker_featurizer: featurizer,
-    compile: [batch_size: 1, sequence_length: 60],
+    compile: [batch_size: 1, sequence_length: 70],
     # Option 1
     defn_options: [compiler: EXLA]
     # Option 2 (reduces GPU usage, but runs noticeably slower)

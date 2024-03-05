@@ -68,6 +68,21 @@ MyModule.adds2(a, 5)
 MyModule.expr_print(a, 7)
 ```
 
+```elixir
+defmodule Softmax do
+  import Nx.Defn
+
+  defn softmax(n) do
+    (Nx.exp(n) / Nx.sum(Nx.exp(n)))
+    |> print_expr()
+  end
+end
+
+a = Nx.tensor([[1, 2], [3, 4]])
+
+Softmax.softmax(a)
+```
+
 Vectorization example
 
 ```elixir
