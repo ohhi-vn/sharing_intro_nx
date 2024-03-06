@@ -114,7 +114,7 @@ Test model with an image.
 ```elixir
 {test_batch, _} = Enum.at(test_data, 0)
 
-test_image = test_batch[10]
+test_image = test_batch[11]
 
 test_image
 |> Nx.reshape({28, 28})

@@ -46,26 +46,22 @@ defmodule MyModule do
   import Nx.Defn
 
   defn adds(x, n) do
-    x + n
+    (x + n) |> print_expr()
   end
 
   defn adds2(x, n) do
-    Nx.add(x, n)
-  end
-
-  defn expr_print(x, n) do
-    adds2(x, n) |> print_expr()
+    Nx.add(x, n) |> print_expr()
   end
 end
 ```
 
 ```elixir
 a = Nx.tensor([[1, 2, 3], [4, 5, 6]])
-MyModule.adds2(a, 5)
+MyModule.adds(a, 3)
 ```
 
 ```elixir
-MyModule.expr_print(a, 7)
+MyModule.adds2(a, 5)
 ```
 
 ```elixir
@@ -100,8 +96,6 @@ defmodule MyModule2 do
     Nx.divide(zero_min, Nx.reduce_max(zero_min))
   end
 end
-```
 
-```elixir
 MyModule2.normalize(Nx.tensor([3, 2, 6]))
 ```

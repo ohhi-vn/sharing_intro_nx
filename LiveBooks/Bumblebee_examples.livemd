@@ -18,7 +18,7 @@ Set default backend for Nx
 Nx.default_backend(EXLA.Backend)
 ```
 
-Load model from HuggingFace
+Load model from Hugging Face
 
 ```elixir
 {:ok, model} = Bumblebee.load_model({:hf, "facebook/bart-large-mnli"})
@@ -34,7 +34,7 @@ zero_shot_serving = Bumblebee.Text.zero_shot_classification(model, tokenizer, la
 Lebel a sentence.
 
 ```elixir
-input = "Do you have any route from Paris to New York"
+input = "Do you have any seat for next week?"
 Nx.Serving.run(zero_shot_serving, input)
 ```
 
