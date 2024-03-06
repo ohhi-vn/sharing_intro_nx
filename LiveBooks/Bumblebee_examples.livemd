@@ -31,8 +31,10 @@ labels = ["New booking", "Update booking", "Cancel booking", "Refund"]
 zero_shot_serving = Bumblebee.Text.zero_shot_classification(model, tokenizer, labels)
 ```
 
+Lebel a sentence.
+
 ```elixir
-input = "I do not need that ticket"
+input = "Do you have any route from Paris to New York"
 Nx.Serving.run(zero_shot_serving, input)
 ```
 
