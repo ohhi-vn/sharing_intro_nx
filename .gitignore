@@ -11,3 +11,6 @@ erl_crash.dump
 _build/
 deps/
 mix.lock
+.DS_Store
+/images/
+/nx_simple/
