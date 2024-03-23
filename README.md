@@ -14,6 +14,37 @@ Follow guide in LiveBooks to run examples.
 
 [Guide for using LiveBook](https://livebook.dev)
 
+## Torchx - Install Pytorch for using Apple Metal in Macbook with Apple Silicon (M1/2/3)
+
+Install `asdf`
+
+Install Python3 by `asdf`
+
+```bash
+asdf plugin-add python
+asdf install python 3.x.x
+asdf global python 3.x.x
+
+pip3 install torch torchvision
+```
+
+setup LiveBook like:
+
+```elixir
+Mix.install(
+  [
+    #...
+    {:nx, "~> 0.7"},
+    {:torchx, "~> 0.7"}
+  ],
+  config: [
+    nx: [default_backend: {Torchx.Backend, device: :mps}]
+  ]
+```
+
+For case cannot load NIF module, try to setup without cache in LiveBook.
+
+Remember set compiler to default compiler for Axon if needed.
 
 ## Install CUDA driver for Ubuntu - For XLA need to run on CUDA on Ubuntu
 
